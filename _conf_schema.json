@@ -1,0 +1,6 @@
+{
+  "default_city":     { "description": "默认城市", "type": "string", "hint": "英文城市名，例如 Shanghai", "default": "" },
+  "default_region":   { "description": "默认城市所在的省或州", "type": "string", "hint": "英文，例如 Shanghai、California", "default": "" },
+  "default_country_code": { "description": "国家代码", "type": "string", "hint": "两位字母，例如 CN、US", "default": "" },
+  "default_district": { "description": "区县（可不填）", "type": "string", "hint": "英文，例如 Bao'an", "default": "" }
+}
