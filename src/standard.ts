@@ -5,7 +5,13 @@
 import { readFileSync } from 'node:fs'
 
 interface Metadata {
-  standard: { errors: { no_location: string; location_not_found: string; network: string } }
+  standard: { errors: {
+      no_location: string
+      location_not_found: string
+      default_city_untranslated: string
+      network: string
+    }
+  }
 }
 
 const metadata: Metadata = JSON.parse(readFileSync(new URL('../metadata.json', import.meta.url), 'utf8'))
@@ -14,4 +20,8 @@ export const errors = metadata.standard.errors
 
 export function locationNotFound(query: string): string {
   return errors.location_not_found.replace('{query}', query)
+}
+
+export function defaultCityUntranslated(city: string): string {
+  return errors.default_city_untranslated.replace('{city}', city)
 }

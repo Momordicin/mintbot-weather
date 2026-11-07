@@ -6,7 +6,7 @@ import { buildReport } from './src/format.ts'
 import { fetchWeather } from './src/forecast.ts'
 import { CallFailure } from './src/http.ts'
 import { resolvePlace, saveQuery } from './src/place.ts'
-import { errors, locationNotFound } from './src/standard.ts'
+import { defaultCityUntranslated, errors, locationNotFound } from './src/standard.ts'
 import type { Period, PlaceQuery, ToolContext, ToolDefinition, Trace } from './src/types.ts'
 
 const PERIODS: Period[] = ['now', 'today', 'tomorrow']
@@ -24,12 +24,8 @@ function readQuery(args: Record<string, unknown>, config: Record<string, unknown
       district: text(args.district)
     }
   }
-  return {
-    city: text(config.default_city),
-    region: text(config.default_region),
-    countryCode: text(config.default_country_code),
-    district: text(config.default_district)
-  }
+  const [city, ...rest] = text(config.default_city).split(',')
+  return { city: city.trim(), region: rest.join(',').trim(), countryCode: '', district: '' }
 }
 
 async function execute(args: Record<string, unknown>, ctx: ToolContext): Promise<string> {
@@ -39,6 +35,10 @@ async function execute(args: Record<string, unknown>, ctx: ToolContext): Promise
   }
   const q = readQuery(args, ctx.config)
   if (!q.city) return errors.no_location
+  if (!text(args.city)) {
+    const configured = text(ctx.config.default_city)
+    if (/[^\x00-\x7f]/.test(configured)) return defaultCityUntranslated(configured)
+  }
 
   const query = [q.city, q.region, q.countryCode, q.district].filter((p) => p !== '').join(', ')
   const trace: Trace = { query, period: period as Period }
@@ -63,7 +63,7 @@ export const tools: ToolDefinition[] = [
   {
     name: 'get_weather',
     description:
-      '查询某个地点现在、今天或明天的天气、空气质量和出行建议，美国地区附带官方预警。地名一律用英文填写，最好带上所在的省或州和国家代码。不知道用户在哪里时不要猜，不要填地点，插件会使用默认城市；没有默认城市时会提示你去问用户。',
+      '查询某个地点现在、今天或明天的天气、空气质量和出行建议，美国地区附带官方预警。用户设置的默认城市是「{{config.default_city}}」（为空表示没有设置）。用户没说地点时查这个城市；默认城市为空时不要猜，不填地点，插件会提示你去问用户。参数一律用英文：city 填英文城市名，region 填英文省或州，country_code 填两位国家代码。',
     parameters: {
       type: 'object',
       properties: {
