@@ -4,7 +4,7 @@
   "desc": "查询现在、今天或明天的天气、空气质量和出行建议，美国地区附带官方预警。",
   "version": "0.1.0",
   "author": "Muyu",
-  "repo": "",
+  "repo": "https://github.com/Momordicin/mintbot-weather",
   "mintbot_version": ">=1.0.0,<2",
   "entry": "main.ts",
   "standard": {
