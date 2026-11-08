@@ -1,5 +1,5 @@
 // mintbot-weather/src/standard.ts — 读取 metadata.json 里的 standard.errors
-// 用法：import { errors } 取三条失败文案，locationNotFound(query) 填入地名
+// 用法：import { errors } 取失败文案，locationNotFound、defaultCityUntranslated、defaultCityNotFound 填入地名
 // 对应文件：metadata.json、main.ts
 
 import { readFileSync } from 'node:fs'
@@ -9,6 +9,7 @@ interface Metadata {
       no_location: string
       location_not_found: string
       default_city_untranslated: string
+      default_city_not_found: string
       network: string
     }
   }
@@ -23,5 +24,9 @@ export function locationNotFound(query: string): string {
 }
 
 export function defaultCityUntranslated(city: string): string {
-  return errors.default_city_untranslated.replace('{city}', city)
+  return errors.default_city_untranslated.replaceAll('{city}', city)
+}
+
+export function defaultCityNotFound(city: string): string {
+  return errors.default_city_not_found.replaceAll('{city}', city)
 }

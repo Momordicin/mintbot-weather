@@ -2,7 +2,7 @@
   "name": "mintbot_weather",
   "display_name": "天气",
   "desc": "查询现在、今天或明天的天气、空气质量和出行建议，美国地区附带官方预警。",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Muyu",
   "repo": "https://github.com/Momordicin/mintbot-weather",
   "mintbot_version": ">=1.0.0,<2",
@@ -14,11 +14,12 @@
     "connect_attempt_timeout_ms": 1000,
     "call_timeout_ms": 60000,
     "max_repeat": 3,
-    "cache": "插件数据目录下 places/，每个查过的地点一个文件：地名查询结果，以及每次查询的原始数据",
+    "cache": "插件数据目录下 places/，每个实际地点一个文件，文件开头列出曾经指向它的名字，其后是地名查询结果和每次查询的原始数据；另有一个名字索引 index.json，记录每个名字对应的地点文件",
     "errors": {
       "no_location": "用户没有说要查哪里，插件也没有设置默认城市。请问用户要查哪个城市，最好带上所在的省或州、国家。",
       "location_not_found": "没有找到「{query}」这个地点。请让用户说得更具体，比如带上省或州、国家。",
-      "default_city_untranslated": "用户的默认城市是「{city}」。请把它换成英文的城市名、省或州和两位国家代码，再调用一次 get_weather。",
+      "default_city_untranslated": "用户的默认城市是「{city}」。请把它换成英文的城市名、省或州和两位国家代码，把「{city}」原样填进 default_city_name，再调用一次 get_weather。",
+      "default_city_not_found": "插件设置里的默认城市「{city}」没有找到对应的地点。请告诉用户到插件设置里把默认城市改得更具体，比如带上省或州、国家。",
       "network": "这次查询因为网络波动没有成功，请告诉用户稍后再试。"
     }
   }

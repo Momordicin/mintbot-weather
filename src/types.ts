@@ -36,6 +36,7 @@ export interface PlaceQuery {
 }
 
 export interface GeoResult {
+  id: number
   name: string
   latitude: number
   longitude: number
@@ -115,7 +116,13 @@ export interface CachedQuery {
   raw: RawBodies
 }
 
-export interface CacheFile {
+export interface PlaceFile {
+  names: string[]
+  place: { queried_at: number; result: Place }
+  queries: CachedQuery[]
+}
+
+export interface LegacyPlaceFile {
   key: string
   place: { queried_at: number; result: Place }
   queries: CachedQuery[]
