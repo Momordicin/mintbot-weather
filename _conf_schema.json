@@ -1,3 +1,3 @@
 {
-  "default_city": { "description": "默认城市", "type": "string", "hint": "可以填中文，例如 上海", "default": "" }
+  "default_city": { "description": "默认城市", "type": "string", "hint": "例如 上海, Santa Clara, 岩手県", "default": "" }
 }
